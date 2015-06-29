@@ -9,7 +9,7 @@ from youtube_dl.version import __version__ as youtube_dl_version
 
 
 if not hasattr(sys.stderr, 'isatty'):
-    # In GAE it's not defined and we must monkeypatch
+    # In GAE it's not defined and we must monkeypatch a
     sys.stderr.isatty = lambda: False
 
 
