@@ -137,6 +137,7 @@ def info():
         'youtube-dl.version': youtube_dl_version,
         'url': url,
         key: result,
+        'ben': 'ben',
     }
     return jsonify(result)
 
