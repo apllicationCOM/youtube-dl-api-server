@@ -2,6 +2,7 @@ import functools
 import logging
 import traceback
 import sys
+import pafy
 
 from flask import Flask, jsonify, request
 import youtube_dl
@@ -133,11 +134,17 @@ def info():
     if query_bool(request.args.get('flatten'), 'flatten', False):
         result = flatten_result(result)
         key = 'videos'
+
+		
+    url = "https://www.youtube.com/watch?v=oc_J8UiUvUo"
+    video = pafy.new(url)
+    best = video.getbest()
+	
     result = {
         'youtube-dl.version': youtube_dl_version,
         'url': url,
         key: result,
-        'ben': 'ben',
+		'best': best.url,
     }
     return jsonify(result)
 
