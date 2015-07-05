@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import functools
 import logging
 import traceback
@@ -9,10 +10,15 @@ import youtube_dl
 from youtube_dl.version import __version__ as youtube_dl_version
 
 
+import youtube_dl
+
+
 if not hasattr(sys.stderr, 'isatty'):
     # In GAE it's not defined and we must monkeypatch
     sys.stderr.isatty = lambda: False
 
+
+	
 
 class SimpleYDL(youtube_dl.YoutubeDL):
     def __init__(self, *args, **kargs):
@@ -21,6 +27,7 @@ class SimpleYDL(youtube_dl.YoutubeDL):
 
 
 def get_videos(url, extra_params):
+
     '''
     Get a list with a dict for every video founded
     '''
@@ -119,6 +126,7 @@ ALLOWED_EXTRA_PARAMS = {
 @route_api('info')
 @set_access_control
 def info():
+	
     url = request.args['url']
     extra_params = {}
     for k, v in request.args.items():
@@ -135,17 +143,32 @@ def info():
         result = flatten_result(result)
         key = 'videos'
 
-		
+    
     url = "https://www.youtube.com/watch?v=oc_J8UiUvUo"
     video = pafy.new(url)
     best = video.getbest()
 	
+	
+    ydl = youtube_dl.YoutubeDL({'outtmpl': '%(id)s%(ext)s'})
+
+    with ydl:
+        result2 = ydl.extract_info(
+            'https://www.youtube.com/watch?v=oc_J8UiUvUo',
+            download=False # We just want to extract the info
+        )
+
+    video_url2 = result2['url']
+    print(video_url2)		
+		
+		
     result = {
         'youtube-dl.version': youtube_dl_version,
         'url': url,
         key: result,
 		'best': best.url,
+        'best2': video_url2,
     }
+	
     return jsonify(result)
 
 

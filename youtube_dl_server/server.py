@@ -1,4 +1,6 @@
 import argparse
+import sys
+
 
 from .app import app
 from .version import __version__
@@ -9,6 +11,8 @@ from .version import __version__
 
 
 def main():
+
+	
     desc = """
            The youtube-dl API server.
            """
@@ -32,9 +36,13 @@ def main():
     parser.add_argument('--version', action='store_true',
                         help='Print the version of the server')
 
+			
     args = parser.parse_args()
     if args.version:
         print(__version__)
         exit(0)
 
+
+    print("aaaaaa")		
     app.run(args.host, args.port)
+
